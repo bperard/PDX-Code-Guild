@@ -1,3 +1,25 @@
-name = input('What is your name?')
-reply = 'hello, ' + name + '!'
-print(reply)
+sentence = 'I was '
+travel = input('What\'s your favorite mode of transportation?')
+sentence += travel + ' the street, when all of a sudden, I saw a '
+attacker = input('What living creature would you least like to find in the forest?')
+sentence += attacker + ' headed in my direction. I started freaking out because it was a '
+day = input('What\'s your favorite day of the week?')
+sentence += day + ' and I had places to be (ain\'t nobody got time for that on a ' + day + '!'
+sentence += ' Without missing a beat, I grabbed my trusty '
+weapon = input('What object do you always have on hand?')
+sentence += weapon + ' and sped up my ' + travel + ', I now had a plan. '
+crime_scene = input('Name a place where you can always find people in your town.')
+sentence += 'After making sure that the ' + attacker + ' was still following me, I headed for ' + crime_scene + '. '
+sentence += ' You can always find people at ' + crime_scene + ' on a '
+sentence += input('Give an adjective describing the weather.')
+sentence += ' ' + day + ', I just had to make sure the ' + attacker + ' didn\'t get me before I arrived.'
+sentence += ' As I rounded the final corner, '
+sentence += input('What is your current mood?')
+sentence += ' from all that ' + travel
+sentence += ', the ' + attacker + ' decided it was done waiting and '
+sentence += input('What\'s a past tense verb')
+sentence += ' in my direction. At the last second, I brandished my ' + weapon
+sentence += ' and deflected the ' + attacker + ' into the line of people outside of '
+sentence += crime_scene + ', saving myself at the expense of all of those people.'
+sentence += ' At the end of the day, who was the real monster; me, or the ' + attacker + '?'
+print(sentence)
