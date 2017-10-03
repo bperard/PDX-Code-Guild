@@ -1,0 +1,11 @@
+import random
+
+pick = ''
+n = int(input('How many characters does your password have to be?'))
+i = 0
+
+while i < n:
+    pick += random.choice('abcdefghijklmnopqrstuvwxyz0123456789')
+    i += 1
+print('Below is your super secret password, make sure to immediately forget it.\n')
+print(pick)
