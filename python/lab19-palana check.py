@@ -18,8 +18,8 @@ def string_sort_list (feed):
     return out
 
 # user input strings
-first = input('What is the first word or phrase?')
-second = input('What is the second word or phrase?')
+first = input('What is the first word or phrase?').lower()
+second = input('What is the second word or phrase?').lower()
 
 # run strip/list/sort function, compare, output anagram status
 if string_sort_list(first) == string_sort_list(second):
