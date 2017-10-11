@@ -18,23 +18,27 @@ peak = []
 valley = []
 plateau = []
 
-# determine indices for peaks, valleys, and plateaus
-i = 1
+# initiate variable to track max peak height(pheight) index/indices(ploc)
 pheight = 0
 ploc = []
+
+# check for initial plateau
 if chart[0] == chart[1]:
     plateau.append(0)
+
+# determine indices for peaks, valleys, and plateaus
+i = 1
 while i < (len(chart) - 1 ):
-    if chart[i] > chart[i - 1] and chart[i] > chart[i + 1]:
+    if chart[i] > chart[i - 1] and chart[i] > chart[i + 1]:    # peak check and index save
         peak.append(i)
-        if chart[i] > pheight:
-            pheight = chart[i]
-            ploc = [i]
-        elif chart[i] == pheight:
-            ploc.append(i)
-    elif chart[i] < chart[i - 1] and chart[i] < chart[i + 1]:
+        if chart[i] > pheight:    # new max peak check
+            pheight = chart[i]    # set new max height
+            ploc = [i]            # save peak index
+        elif chart[i] == pheight:    # check for equal to max peak
+            ploc.append(i)           # save equal peak index
+    elif chart[i] < chart[i - 1] and chart[i] < chart[i + 1]:    # valley check and index save
         valley.append(i)
-    if chart[i] == chart[i + 1]:
+    if chart[i] == chart[i + 1]:    # plateau check and index save; also max/equal peak checks
         plateau.append(i)
         if chart[i] > pheight:
             pheight = chart[i]
@@ -46,6 +50,8 @@ while i < (len(chart) - 1 ):
         if chart[i] == pheight:
             ploc.append(i)
     i += 1
+
+# check for ending plateau
 if chart[-1] == chart[-2]:
     plateau.append(len(chart) - 1)
 
@@ -75,9 +81,13 @@ if chart[-1] == chart[-2]:
 
 
 
+# build topographical map from chart list
 
+# set max height and initiate build string
 level = 9
 build = ''
+
+# build land and air(adding in water), and set new layers(line break "\n"), top down build pattern
 while level > 0:
     for boulder in chart:
         if boulder >= level:
@@ -87,6 +97,7 @@ while level > 0:
     build += '\n'
     level -= 1
 
+# build landmark key under map
 for map in range(len(chart)):
     if map in peak:
         build += 'P'
@@ -98,7 +109,7 @@ for map in range(len(chart)):
         build += ' '
 build += ' <== Landmark Key: (P)eak, (V)alley, (=)Plateau?'
 
-
+# output data and gui
 print('\n')
 print('Max peak is at ' + str(ploc) + ' with a height of ' + str(pheight))
 print(build)
