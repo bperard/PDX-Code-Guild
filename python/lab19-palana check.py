@@ -18,11 +18,11 @@ def string_sort_list (feed):
     return out
 
 # user input strings
-first = input('What is the first word or phrase?').lower()
-second = input('What is the second word or phrase?').lower()
+first = input('What is the first word or phrase?')
+second = input('What is the second word or phrase?')
 
-# run strip/list/sort function, compare, output anagram status
-if string_sort_list(first) == string_sort_list(second):
+# run strip/list/sort function, lower caps, compare, output anagram status
+if string_sort_list(first.lower()) == string_sort_list(second.lower()):
     print(first + ' and ' + second + ' are anagrams')
 else:
     print(first + ' and ' + second + ' aren\'t anagrams')
