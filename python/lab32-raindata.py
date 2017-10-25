@@ -3,9 +3,7 @@ lab 32 - rain data
 '''
 
 import datetime
-# import matplotlib.pyplot as plt
-# plt.plot(x_values, y_values)
-# plt.show()
+import matplotlib.pyplot as plt
 
 
 def mean_rain(list):    # receive list of lists of daily data, return mean rain per day
@@ -78,3 +76,15 @@ for data in dates:    # iterate through elements in each list
             else:
                 data[i] = int(data[i])    # convert index 1+ to int type
 
+# create data lists for x and y values of plot
+yval = []
+xval = []
+i = 0
+for day in dates:
+    if day[0].year == 2017:    # increment days on x axis, y axis daily totals
+        i += 1
+        xval.append(i)
+        yval.append(day[1])
+
+plt.plot(xval, yval)    # plot values from lists
+plt.show()    # show plot
