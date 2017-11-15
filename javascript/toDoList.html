@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Get Stuff Done</title>
+    <meta name="Get Stuff Done" content="List of tasks">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Bungee|Bungee+Shade|Roboto+Condensed" rel="stylesheet">
+    <style>
+        /* functional */
+        li span {    /*hide item controls*/
+            display: none;
+        }
+
+        #current_list li:hover span:not(.refreshLi) {    /*reveal to-do item controls*/
+            display: block;
+        }
+
+        #complete_list li:hover span:not(.completeLi) {    /*reveal to-did item controls*/
+            display: block;
+        }
+
+        /* design */
+        body {
+            margin: 5px;
+            background-color: #6B5E62;
+            height: 100vh;
+            line-height: .5;
+            font-size: calc(.2em + 2vw + .25vh);
+            font-family: 'Bungee', Sans-Serif;
+            color: #7FBA73;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            margin-bottom: 10px;
+            width: 95%;
+            height: 25%;
+            padding: 8px;
+            box-shadow: inset 0 0 7px 5px #FF1053, inset 0 0 5px 4px #FF1053, inset 0 0 0 3px #FF1053;
+            background-color: #ECF2D2;
+        }
+
+        #top_page {
+            margin: 0;
+            padding: 0;
+            line-height: .10;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #top_page h1 {
+            font-family: 'Bungee Shade', Sans-Serif;
+            margin: 35px 0;
+            font-size: calc(.8em + 6vw);
+        }
+
+        #top_page p {
+            margin: 35px 0;
+            font-size: 1.5em;
+        }
+
+        main {
+            height: 53vh;
+            width: 95%;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #create {
+            font-family: 'Roboto Condensed', sans-serif;
+            width: calc(100% - .3em);
+            background-color: #FF1053;
+            padding: .15em;
+            border: 1px solid #6B5E62;
+            box-shadow: 0 0 0 1.5px #FF1053;
+            margin-bottom: 7px;
+        }
+
+        #wrapper_create {
+            width: 36%;
+            min-width: 200px;
+            background-color: #7FBA73;
+            display: flex;
+            border-radius: 0 3px 3px 0;
+        }
+
+        #wrapper_create > * {
+            color: #ECF2D2;
+            display: flex;
+            justify-content: flex-start;
+            font-family: 'Roboto Condensed', sans-serif;
+        }
+
+        #input_name {
+            flex-shrink: 1;
+            background-color: transparent;
+            flex-grow: 3;
+            border: solid 1px #DAEFB3;
+            border-radius: 3px;
+            padding: 0 0 0 .23em;
+        }
+
+        #input_name:focus {    /*highlight and style for active user input*/
+            background-color: #ECF2D2;
+            color: #6B5E62;
+            font-weight: 900;
+            outline: none;
+            box-shadow: inset 0 0 3px 1px #7FBA73;
+        }
+
+        #add_item_btn {
+            flex-shrink: 1;
+            background-color: transparent;
+            border: none;
+        }
+
+        #add_item_btn:focus {    /*button highlight*/
+            outline: none;
+            box-shadow: inset 0 0 1px 1px #ECF2D2, 0 0 3px 1px #ECF2D2;
+        }
+
+        #listed {
+            margin: 0;
+            width: 98%;
+            min-height: 23vh;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+
+        #list_div, #complete_div {
+            height: 100%;
+            width: 49.5%;
+            background-color: #6B5E62;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            width: 100%;
+            height: 1.1em;
+            background-color: #DAEFB3;
+            text-align: center;
+            justify-content: center;
+            padding-top: .6em;
+            margin: 0 0 4px;
+            box-shadow: 0 2px 2px 0 black, inset 0 0 2px 1px #7FBA73;
+        }
+
+        #complete_list, #current_list {
+            width: 97%;
+            background-color: #ECF2D2;
+            box-shadow: 0 2px 2px 0 black;
+            line-height: 1.3;
+            margin: 5px 0 0 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        li {
+            padding-left: .5em;
+        }
+
+        #current_list li::before {
+            content: '◽';
+            color: darkgoldenrod;
+            padding-right: .5em;
+        }
+
+        #complete_list li::before {
+            content: '◾';
+            color: #FF1053;
+            padding-right: .5em;
+        }
+
+        #thumb {    /*egg*/
+            display: none;
+            height: 14%;
+            width: 14%;
+            border-radius: 50%;
+            opacity: .05;
+            transition: 3s;
+            position: relative;
+            top: 4.3em;
+        }
+
+        #thumb:hover {
+            opacity: 1;
+            transform: rotateY(360deg) scale(5.1);
+            box-shadow: 0 0 9px 4px goldenrod, 0 0 7px 3px #FF1053, 0 0 8px 4px #FF1053, 0 0 5px 1px goldenrod;
+        }
+
+        li span {    /*list menu items*/
+            cursor: pointer;
+            line-height: 1.3;
+            padding-left: .8em;
+        }
+
+        #current_list li span:hover {
+            color: #FF1053;
+        }
+
+        #complete_list li span:hover {
+            color: darkgoldenrod;
+        }
+
+        footer {
+            font-size: .6em;
+            position: fixed;
+            bottom: 15px;
+            margin: 0;
+            padding: 0;
+            width: 85%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        footer > * {
+            font-weight: 600;
+            font-family: "Roboto", sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        footer a::after {
+            content: '◽';
+            padding-left: .7em;
+        }
+
+        footer a {
+            transition: 1.5s;
+        }
+
+        footer a:hover {
+            transform: rotateY(180deg);
+            color: #FF1053;
+        }
+
+        a {
+            color: goldenrod;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div id="top_page">
+        <h1>Get Stuff Done.</h1>
+        <p>we list it, so you can do it</p>
+
+    </div>
+    <!-- Insert functionality for new list, save list, access list in sub title space -->
+</header>
+<main>
+    <div id="create">
+        <div id="wrapper_create">
+            <input id="input_name" type="text" title='enter item' value=" Enter list item"/>
+            <button id="add_item_btn">Add Item</button>
+        </div>
+    </div>
+    <div id="listed">
+        <div id="list_div">
+            <h2>To-Do</h2>
+            <ul id="current_list">
+            </ul>
+            <img src="https://i.imgur.com/wiQNOyu.gif" alt="cat thumb up" id='thumb' title="thumb up."/>
+        </div>
+        <div id="complete_div">
+            <h2>To-Did</h2>
+            <ul id="complete_list">
+            </ul>
+        </div>
+    </div>
+</main>
+<footer>
+    <p><small>&copy; 2017 Room 101 Productions</small></p>
+    <a href="https://github.com/trashpig/pcg">i am</a>
+</footer>
+</body>
+    <script>
+        let input_name = document.getElementById('input_name');    //text input field
+        let add_item_btn = document.getElementById('add_item_btn');    //add item button
+
+        input_name.onfocus = function() {input_name.value = ''};    //clear text field on focus
+
+        add_item_btn.onclick = function() {    //create and append li with span element menu functionality attached
+            if (input_name.value !== '' && input_name.value !== 'Enter list item') {    //prevent add blank or default value items
+                let current_list = document.getElementById('current_list');
+                let list_item = document.createElement('li');
+                list_item.innerText = input_name.value;
+                list_item.innerHTML += "<span class='completeLi' style='cursor:pointer' onclick='completeLi(this)'>☑ completed</span>" +
+                    "<span class='refreshLi' style='cursor:pointer' onclick='refreshLi(this)'>☐ refresh</span>" +
+                    "<span class='removeLi' style='cursor:pointer' onclick='removeLi(this)'>☒ remove</span>";
+                current_list.appendChild(list_item);
+            }
+            input_name.value = 'Enter list item'    //repopulate list for new entry
+        };
+
+        function completeLi(identity) {    //span element onclick append li #complete_list ul
+            let complete_list = document.getElementById('complete_list');
+            let complete_item = identity.parentElement;
+            complete_list.appendChild(complete_item);
+            thumb();
+        }
+
+        function refreshLi(identity) {    //span element onclick append li #current_list ul
+            let current_list = document.getElementById('current_list');
+            let current_item = identity.parentElement;
+            current_list.appendChild(current_item);
+            thumb();
+        }
+
+        function removeLi(identity) {    //span element onclick remove li parent ul
+            let list = identity.parentElement.parentElement;
+            let item = identity.parentElement;
+            list.removeChild(item);
+            thumb();
+        }
+
+        function thumb() {    //thumb cat egg
+            let complete = document.getElementById('complete_list');
+            let current = document.getElementById('current_list');
+            let thumb = document.getElementById('thumb');
+            if (complete.children.length >= 3 && current.children.length === 0) {
+                thumb.style.display = 'inline';
+            } else {
+                thumb.style.display = 'none';
+            }
+        }
+    </script>
+</html>
