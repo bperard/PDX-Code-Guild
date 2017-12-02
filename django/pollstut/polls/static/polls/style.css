@@ -1,0 +1,12 @@
+body {
+    background: oldlace url("images/bars.gif") repeat-x left bottom;
+    background-size: 43vh;
+    font-size: calc(.7em + 2vh);
+}
+
+li a {
+    color: black;
+    text-decoration: none;
+    display: inline;
+}
+
