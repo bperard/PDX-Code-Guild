@@ -1,0 +1,63 @@
+<style>
+    #custom_name_text {
+        display: none;
+    }
+</style>
+
+<h1>Short URL</h1>
+
+<p>Enter URL and choose (or auto-generate) a short URL to use instead.</p>
+
+<form action="{% url 'shorter:entry' %}" method="post">
+{% csrf_token %}
+    <input type="text" name="url_entry" placeholder="Long URL" /><br />
+    <input type="text" id="custom_name_text" name="custom_name_text" placeholder="Custom Short URL" />
+    <input type="checkbox" id="custom_name_box" />Enter Custom Short URL?<br />
+    <input type="submit" value="Create Short URL" />
+</form>
+{% if error_message %}<p id="error_message"><strong>{{ error_message }}</strong></p>{% endif %}
+{% if name %}<p id="success_message"><strong>Short URL entry "{{ name }}" for "{{ long }}" successful!</strong></p>{% endif %}
+<a href="#entries" id="view_entries" alt="view entries">View Entries</a>
+<div id="entries_wrapper">
+    <table>
+        <tr>
+            <th>Short URL</th>
+            <th>Long URL</th>
+        </tr>
+        {% for entry in entries %}
+        <tr>
+            <th>{{ entry.name }}</th>
+            <th><a href="{{ entry.long }}">{{ entry.long }}</a></th>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+
+<script>
+    let custom_name_box = document.getElementById('custom_name_box');
+    let custom_name_text = document.getElementById('custom_name_text');
+    let view_entries = document.getElementById('view_entries');
+    let entries_wrapper = document.getElementById('entries_wrapper');
+
+    custom_name_box.onclick = function () {
+        if (custom_name_box.checked) {
+            custom_name_text.style.display = 'inline';
+            custom_name_text.required = true;
+        } else {
+            custom_name_text.style.display = 'none';
+            custom_name_text.required = false;
+        }
+    };
+
+    entries_wrapper.style.display = 'none';
+    view_entries.onclick = function () {
+        if (entries_wrapper.style.display == 'none') {
+            entries_wrapper.style.display = 'initial';
+            view_entries.innerText = 'Hide Entries';
+        } else {
+            entries_wrapper.style.display = 'none';
+            view_entries.innerText = 'View Entries'
+        }
+    }
+</script>
